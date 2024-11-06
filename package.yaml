@@ -1,0 +1,48 @@
+name: OptionPricingSim
+version: 0.1.0.0
+dependencies:
+  - base >= 4.7 && < 5
+  - random
+  - servant
+  - servant-server
+  - warp
+  - aeson
+  - vector
+  - hspec
+  - bytestring
+  - wai
+library:
+  source-dirs: src
+  dependencies:
+    - base
+    - servant
+    - servant-server
+    - warp
+    - aeson
+    - vector
+    - bytestring
+    - wai
+executables:
+  OptionPricingSim:
+    main: Main.hs       # Specifies the main entry point
+    source-dirs: app       # Directory where Main.hs is located
+    dependencies:
+      - OptionPricingSim   # Links the library to the executable
+      - base
+      - servant
+      - servant-server
+      - warp
+      - aeson
+      - vector
+      - bytestring
+      - wai
+tests:
+  OptionPricingSim-test:
+    main: Spec.hs
+    source-dirs: test
+    dependencies:
+      - OptionPricingSim
+      - hspec
+      - hspec-wai
+      - wai
+      - bytestring

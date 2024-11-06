@@ -1,0 +1,82 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.37.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           OptionPricingSim
+version:        0.1.0.0
+build-type:     Simple
+
+library
+  exposed-modules:
+      Api
+      MonteCarlo
+      OptionPricing
+      PricingMethods.BlackScholes
+      PricingMethods.FiniteDifference
+      RandomWalk
+      Server
+      Types
+  other-modules:
+      Paths_OptionPricingSim
+  hs-source-dirs:
+      src
+  build-depends:
+      aeson
+    , base
+    , bytestring
+    , hspec
+    , random
+    , servant
+    , servant-server
+    , vector
+    , wai
+    , warp
+  default-language: Haskell2010
+
+executable OptionPricingSim
+  main-is: Main.hs
+  other-modules:
+      Paths_OptionPricingSim
+  hs-source-dirs:
+      app
+  build-depends:
+      OptionPricingSim
+    , aeson
+    , base
+    , bytestring
+    , hspec
+    , random
+    , servant
+    , servant-server
+    , vector
+    , wai
+    , warp
+  default-language: Haskell2010
+
+test-suite OptionPricingSim-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      BlackScholesSpec
+      FiniteDifferenceSpec
+      MonteCarloSpec
+      ServerSpec
+      Paths_OptionPricingSim
+  hs-source-dirs:
+      test
+  build-depends:
+      OptionPricingSim
+    , aeson
+    , base >=4.7 && <5
+    , bytestring
+    , hspec
+    , hspec-wai
+    , random
+    , servant
+    , servant-server
+    , vector
+    , wai
+    , warp
+  default-language: Haskell2010
