@@ -11,30 +11,57 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-      - name: Set up GHC with Stack
-        uses: haskell/actions/setup@v1
-        with:
-          stack-version: 'latest'
-          ghc-version: '8.10.7'
+    - name: Set up GHC and Stack
+      uses: haskell/actions/setup@v2
+      with:
+        ghc-version: '9.6.6'  # Match your project's GHC version
+        stack-version: 'latest'
+        enable-stack: true
 
-      - name: Install dependencies
-        run: stack setup
+    - name: Cache Stack dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.stack
+          .stack-work
+        key: ${{ runner.os }}-stack-${{ hashFiles('stack.yaml') }}-${{ hashFiles('package.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-stack-
 
-      - name: Build the project
-        run: stack build
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libgmp-dev
 
-      - name: Run tests
-        run: stack test
+    - name: Install dependencies
+      run: |
+        stack setup
+        stack build --only-dependencies
 
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-results
-          path: test-reports/
+    - name: Build
+      run: stack build --test --no-run-tests
 
+    - name: Run tests
+      run: stack test
+
+    - name: Check formatting (optional)
+      run: |
+        if command -v stylish-haskell >/dev/null 2>&1; then
+          stylish-haskell -r . -i
+        else
+          echo "stylish-haskell not installed, skipping format check"
+        fi
+
+    - name: Upload test artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: |
+          .stack-work/dist/**/build/OptionPricingSim-test/OptionPricingSim-test.log
+          test-reports/
+        retention-days: 7

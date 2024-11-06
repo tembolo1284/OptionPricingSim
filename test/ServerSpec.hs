@@ -1,14 +1,14 @@
--- test/ServerSpec.hs
 module ServerSpec where
 
 import Test.Hspec
 import Test.Hspec.Wai
 import Network.Wai (Application)
-import Server (app)  -- Import app from Server
+import Server (app)
 import Api (OptionRequest(..))
 import Data.Aeson (encode)
 import qualified Data.ByteString.Lazy.Char8 as BL
 import qualified Data.ByteString.Char8 as BS
+import qualified Data.CaseInsensitive as CI  -- Import CaseInsensitive
 
 -- Set up the application for testing
 withApp :: IO Application
@@ -30,6 +30,5 @@ spec = with withApp $ do
                     numSimulations = 10000,
                     optionType = "MonteCarlo"
                 }
-            request (BS.pack "POST") (BS.pack "/price") [("Content-Type", BS.pack "application/json")] requestBody
+            request (BS.pack "POST") (BS.pack "/price") [(CI.mk (BS.pack "Content-Type"), BS.pack "application/json")] requestBody
                 `shouldRespondWith` 200
-

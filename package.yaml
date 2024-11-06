@@ -11,6 +11,8 @@ dependencies:
   - hspec
   - bytestring
   - wai
+  - case-insensitive
+  - mwc-random
 library:
   source-dirs: src
   dependencies:
@@ -22,6 +24,8 @@ library:
     - vector
     - bytestring
     - wai
+    - case-insensitive
+    - mwc-random
 executables:
   OptionPricingSim:
     main: Main.hs       # Specifies the main entry point
@@ -36,13 +40,21 @@ executables:
       - vector
       - bytestring
       - wai
+      - case-insensitive
+      - mwc-random
 tests:
   OptionPricingSim-test:
     main: Spec.hs
     source-dirs: test
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+      - -fwarn-incomplete-patterns
     dependencies:
       - OptionPricingSim
       - hspec
       - hspec-wai
       - wai
       - bytestring
+      - mwc-random

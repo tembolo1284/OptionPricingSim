@@ -1,16 +1,8 @@
 module MonteCarlo (monteCarloOption) where
 
-import System.Random (randomRIO)
+import RandomWalk (simulatePath)
 import Control.Monad (replicateM)
 import Types
-
--- Function to simulate a single price path at expiration
-simulatePath :: InitialStockPrice -> InterestRate -> Volatility -> TimeToMaturity -> IO Double
-simulatePath s0 r sigma t = do
-    -- Generate a random value from a standard normal distribution
-    z <- randomRIO (-1.0, 1.0)  -- For simplicity, we assume a uniform distribution here
-    let st = s0 * exp ((r - 0.5 * sigma^2) * t + sigma * sqrt t * z)
-    return st
 
 -- Function to calculate option payoff
 optionPayoff :: OptionType -> StrikePrice -> Double -> Double

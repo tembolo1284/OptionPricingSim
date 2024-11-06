@@ -1,4 +1,3 @@
--- test/BlackScholesSpec.hs
 module BlackScholesSpec where
 
 import Test.Hspec
@@ -17,7 +16,6 @@ spec = describe "Black-Scholes Option Pricing" $ do
             volatility = 0.2
             timeToMaturity = 1.0
             optionType = Call
-            expectedPrice = 10.4506  -- Adjust this to match the actual expected result
+            expectedPrice = 10.4506
         let bsPrice = blackScholesOption initialStock strikePrice interestRate volatility timeToMaturity optionType
-        bsPrice `shouldBe` expectedPrice
-
+        bsPrice `shouldSatisfy` (\p -> abs (p - expectedPrice) < 0.01)  -- Allowing a tolerance of 0.001

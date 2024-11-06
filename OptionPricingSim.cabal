@@ -26,7 +26,9 @@ library
       aeson
     , base
     , bytestring
+    , case-insensitive
     , hspec
+    , mwc-random
     , random
     , servant
     , servant-server
@@ -46,7 +48,9 @@ executable OptionPricingSim
     , aeson
     , base
     , bytestring
+    , case-insensitive
     , hspec
+    , mwc-random
     , random
     , servant
     , servant-server
@@ -66,13 +70,16 @@ test-suite OptionPricingSim-test
       Paths_OptionPricingSim
   hs-source-dirs:
       test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -fwarn-incomplete-patterns
   build-depends:
       OptionPricingSim
     , aeson
     , base >=4.7 && <5
     , bytestring
+    , case-insensitive
     , hspec
     , hspec-wai
+    , mwc-random
     , random
     , servant
     , servant-server
